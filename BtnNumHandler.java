@@ -25,35 +25,87 @@ class BtnNumHandler implements MouseListener {
 
         String lbl = resultLabel.getText();
         if (passedBtn.getText().equals("=")) {
-
+            evaluateResult(lbl);
         } else if (passedBtn.getText().equals("+")) {
-            if (lbl.length() != 0) {
-                if (lbl.charAt(lbl.length()-1) != '+') {
-                    putCharacter(lbl);
-                }
+            if (!checkSymbols(lbl)) {
+                putCharacter(lbl);
             }
         } else if (passedBtn.getText().equals("-")) {
-            if (lbl.length() != 0) {
-                if (lbl.charAt(lbl.length()-1) != '-') {
-                    putCharacter(lbl);
-                }
+            if (!checkSymbols(lbl)) {
+                putCharacter(lbl);
             }
         } else if (passedBtn.getText().equals("*")) {
-            if (lbl.length() != 0) {
-                if (lbl.charAt(lbl.length()-1) != '*') {
-                    putCharacter(lbl);
-                }
+            if (!checkSymbols(lbl)) {
+                putCharacter(lbl);
             }
         } else if (passedBtn.getText().equals("/")) {
-            if (lbl.length() != 0) {
-                if (lbl.charAt(lbl.length()-1) != '/') {
-                    putCharacter(lbl);
-                }
+            if (!checkSymbols(lbl)) {
+                putCharacter(lbl);
             }
         } else {
             putCharacter(lbl);
         }
 
+    }
+
+    private void evaluateResult(String lbl) {
+        
+        boolean symbolCheck = false;
+        for (int i = 0; i < lbl.length(); i++) {
+            if (lbl.charAt(i) == '+' || lbl.charAt(i) == '-' || lbl.charAt(i) == '*' || lbl.charAt(i) == '/') {
+                symbolCheck = true;
+                break;
+            }
+        }
+
+        if (symbolCheck) {
+            String s1 = "";
+            String s2 = "";
+            char sym = '=';
+            int stop = 1;
+
+            for (int i = 0; i < lbl.length(); i++) {
+                char c = lbl.charAt(i);
+                if (c == '+' || c == '-' || c == '*' || c == '/') {
+                    stop += i;
+                    sym = c;
+                    break;
+                    
+                } else {
+                    s1 += c;
+                }
+            }
+
+            for (; stop < lbl.length(); stop++) {
+                s2 += lbl.charAt(stop);
+            }
+
+
+            if (sym == '+') {
+                resultLabel.setText(Double.toString(Double.parseDouble(s1) + Double.parseDouble(s2)));
+            } else if (sym == '-') {
+                resultLabel.setText(Double.toString(Double.parseDouble(s1) - Double.parseDouble(s2)));
+            } else if (sym == '*') {
+                resultLabel.setText(Double.toString(Double.parseDouble(s1) * Double.parseDouble(s2)));
+            } else if (sym == '/') {
+                resultLabel.setText(Double.toString(Double.parseDouble(s1) / Double.parseDouble(s2)));
+            }
+        } else {
+            resultLabel.setText("");
+        }
+
+    }
+
+    private boolean checkSymbols(String lbl) {
+        boolean symbol = false; 
+        for (int x = 0; x < lbl.length(); x++) {
+            if (lbl.charAt(x) == '+' || lbl.charAt(x) == '-' || lbl.charAt(x) == '/' || lbl.charAt(x) == '*') {
+                symbol = true;
+                
+            }
+        }
+
+        return symbol;
     }
 
     @Override
@@ -94,5 +146,4 @@ class BtnNumHandler implements MouseListener {
             this.resultLabel.setText(lbl);
         }
     }
-
 }
