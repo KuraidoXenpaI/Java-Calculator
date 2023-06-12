@@ -61,7 +61,7 @@ class BtnNumHandler implements MouseListener {
         if (symbolCheck) {
             String s1 = "";
             String s2 = "";
-            char sym = '=';
+            char sym = ' ';
             int stop = 1;
 
             for (int i = 0; i < lbl.length(); i++) {
@@ -124,25 +124,26 @@ class BtnNumHandler implements MouseListener {
 
     public void putCharacter(String lbl) {
         if (passedBtn.getText().equals(".")) {
-            boolean dot = false;
-            for (int x = 0; x < lbl.length(); x++) {
-                if (lbl.charAt(x) == '.') {
-                    dot = true;
+            int point = 0;
+            for (int i = 0; i < lbl.length(); i++) {
+
+                if (lbl.charAt(i) == '.') {
+                    point++;
                 }
 
-                if (dot) {
-                    break;
+                if (lbl.charAt(i) == '+' || lbl.charAt(i) == '-' || lbl.charAt(i) == '*' || lbl.charAt(i) == '/') {
+                    point--;
+                    
                 }
             }
 
-            if (!dot) {
+            if (point != 1) {
                 lbl += this.passedBtn.getText();
                 this.resultLabel.setText(lbl);
             }
 
         } else {
             lbl += this.passedBtn.getText();
-
             this.resultLabel.setText(lbl);
         }
     }
